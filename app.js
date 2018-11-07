@@ -63,6 +63,21 @@ const budgetController = (function() {
             return newItem;
         },
 
+        // DELETING AN ITEM FROM DATA OBJECT
+        deleteItem: function(type, id) {
+            let index, ids;
+
+            ids = data.allItems[type].map(function(current) {
+                return current.id;
+            });
+
+            index = ids.indexOf(id);
+
+            if (index > -1) {
+                data.allItems[type].splice(index, 1);
+            }
+        },
+
         calculateBudget: function() {
             // 1. CALCULATE TOTAL INCOME AND EXPENSES
             calculateTotal('exp');
@@ -246,9 +261,10 @@ const appController = (function(budgetController, UIController) {
         if (itemID) {
             splitID = itemID.split('-');
             type = splitID[0];
-            ID = splitID[1];
+            ID = parseInt(splitID[1]);
 
-            // 1. DELETE AND ITEM FROM THE DATA OBJECT
+            // 1. DELETE AN ITEM FROM THE DATA OBJECT
+            budgetController.deleteItem(type, ID);
 
             // 2. DELETE THE ITEM FROM THE UI
 
